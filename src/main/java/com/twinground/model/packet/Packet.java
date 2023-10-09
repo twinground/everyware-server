@@ -8,6 +8,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 public class Packet {
-    private int id;
+    private int type;
     private body body;
 }

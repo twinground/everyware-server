@@ -1,24 +1,17 @@
 package com.twinground.server;
-
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.messaging.simp.config.MessageBrokerRegistry;
-import org.springframework.web.socket.config.annotation.*;
+import org.springframework.web.socket.config.annotation.EnableWebSocket;
+import org.springframework.web.socket.config.annotation.WebSocketConfigurer;
+import org.springframework.web.socket.config.annotation.WebSocketHandlerRegistry;
 
 @Configuration
-@EnableWebSocketMessageBroker
-public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
-    public void configureMessageBroker(MessageBrokerRegistry registry){
-        registry.enableSimpleBroker("/sub", "/queue");
-        registry.setApplicationDestinationPrefixes("/pub");
-    }
+@EnableWebSocket
+@RequiredArgsConstructor
+public class WebSocketConfig implements WebSocketConfigurer {
+    private final WebSocketHandler webSocketHandler;
     @Override
-    public void registerStompEndpoints(StompEndpointRegistry registry){
-        /*
-        핸드쉐이크 커넥션을 생성할 경로
-         */
-        registry.addEndpoint("")
-                .setAllowedOrigins("*");
+    public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
+        registry.addHandler(webSocketHandler, "").setAllowedOrigins("*");
     }
-
-
 }

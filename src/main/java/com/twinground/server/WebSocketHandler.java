@@ -1,5 +1,4 @@
 package com.twinground.server;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.twinground.model.packet.ConnectionBody;
@@ -9,6 +8,7 @@ import com.twinground.model.packet.TransformBody;
 import com.twinground.model.packet.transfrom.ITransform;
 import com.twinground.model.packet.transfrom.Position;
 import com.twinground.model.packet.transfrom.Quaternion;
+import com.twinground.model.packet.transfrom.TransformData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,6 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.logging.Logger;
 
 
 @Component
@@ -27,8 +26,7 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class WebSocketHandler extends TextWebSocketHandler{
     private final ObjectMapper objectMapper;
-    private HashSet<SessionPacket> sessions = new HashSet<>();
-    private final static Logger LOG = Logger.getGlobal();
+    private final WorldRepository worldRepository;
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
@@ -42,33 +40,46 @@ public class WebSocketHandler extends TextWebSocketHandler{
         if (id == 1) {
             ConnectionBody bodyObject = objectMapper.treeToValue(jsonNode.get("body"), ConnectionBody.class);
             bodyObject.setSession_id(session.getId());
-            ArrayList<TransformBody> transforms = new ArrayList<>();
+            ArrayList<TransformData> transforms = new ArrayList<>();
+            String expo_name = bodyObject.getExpo_name();
+            HashSet<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
             for (SessionPacket sessionPacket : sessions) {
                 if (!sessionPacket.getWebSocketSession().getId().equals(session.getId())) {
-                    transforms.add((TransformBody) sessionPacket.getPacket().getBody());
+                    TransformBody tmp = (TransformBody) sessionPacket.getPacket().getBody();
+                    transforms.add(tmp.toTransformData());
                 }
             }
             bodyObject.setTransforms(transforms);
             Packet updatepacket = new Packet(id, bodyObject);
-            Packet defaultPacket = new Packet(2, initTransform(session.getId()));
+            TransformBody initTransformBody = initTransform(session.getId(), bodyObject.getExpo_name());
+            Packet defaultPacket = new Packet(2, initTransformBody);
             SessionPacket sessionPacket= new SessionPacket(session, defaultPacket);
             String connectionJson = objectMapper.writeValueAsString(updatepacket);
             TextMessage textMessage = new TextMessage(connectionJson);
             session.sendMessage(textMessage);
             sessions.add(sessionPacket);
+            ArrayList<TransformData> transforms1 = new ArrayList<>();
+            transforms1.add(initTransformBody.toTransformData());
+            bodyObject.setTransforms(transforms1);
+            updatepacket.setBody(bodyObject);
+            String aaaa = objectMapper.writeValueAsString(updatepacket);
+            System.out.println(aaaa);
+            worldRepository.getWorld(expo_name).send(updatepacket, objectMapper, session.getId());
         }
         //transform 변환하면 보내는 코드
         else if (id == 2) {
             TransformBody bodyObject = objectMapper.treeToValue(jsonNode.get("body"), TransformBody.class);
             Packet updatepacket = new Packet(id, bodyObject);
             String sessionId = session.getId();
+            String expo_name = bodyObject.getExpo_name();
+            HashSet<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
             for (SessionPacket sessionPacket : sessions) {
                 if (sessionPacket.getWebSocketSession().getId().equals(session.getId())) {
                     sessionPacket.setPacket(updatepacket);
                     break;
                 }
             }
-            send(updatepacket,objectMapper,sessionId);
+            worldRepository.getWorld(expo_name).send(updatepacket,objectMapper,sessionId);
         }
 
     }
@@ -83,35 +94,24 @@ public class WebSocketHandler extends TextWebSocketHandler{
         Packet packet = new Packet(0, initBody);
         String connectionJson = objectMapper.writeValueAsString(packet);
         TextMessage textMessage = new TextMessage(connectionJson);
+        System.out.println(connectionJson);
         session.sendMessage(textMessage);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
-        sessions.removeIf(sessionPacket -> sessionPacket.getWebSocketSession().equals(session));
+        worldRepository.remove(session);
     }
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
     }
 
-    private <T> void send(T messageObject, ObjectMapper objectMapper, String excludeUserId) {
-        try {
-            TextMessage message = new TextMessage(objectMapper.writeValueAsString(messageObject));
 
-            sessions.parallelStream()
-                    .filter(session -> !session.getWebSocketSession().getId().equals(excludeUserId))
-                    .forEach(session -> WebSocketUtils.sendMessage(session.getWebSocketSession(), message));
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e.getMessage(), e);
-        }
-    }
-
-    private TransformBody initTransform(String sessionId){
+    private TransformBody initTransform(String sessionId, String expo_name){
         Position position = new Position(0,0);
         Quaternion quaternion = new Quaternion(0,0);
         ITransform iTransform = new ITransform(position,quaternion,"idle");
-        TransformBody transformBody = new TransformBody(sessionId, iTransform);
-        return transformBody;
+        return new TransformBody(sessionId, expo_name,iTransform);
     }
 }

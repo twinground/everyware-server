@@ -94,12 +94,16 @@ public class WebSocketHandler extends TextWebSocketHandler{
         Packet packet = new Packet(0, initBody);
         String connectionJson = objectMapper.writeValueAsString(packet);
         TextMessage textMessage = new TextMessage(connectionJson);
-        System.out.println(connectionJson);
         session.sendMessage(textMessage);
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus status) throws Exception {
+        String sessionId = session.getId();
+        InitBody initBody = new InitBody(sessionId);
+        Packet packet = new Packet(3, initBody);
+        String connectionJson = objectMapper.writeValueAsString(packet);
+        TextMessage textMessage = new TextMessage(connectionJson);
         worldRepository.remove(session);
     }
 

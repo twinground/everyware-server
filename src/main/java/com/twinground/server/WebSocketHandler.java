@@ -62,8 +62,6 @@ public class WebSocketHandler extends TextWebSocketHandler{
             transforms1.add(initTransformBody.toTransformData());
             bodyObject.setTransforms(transforms1);
             updatepacket.setBody(bodyObject);
-            String aaaa = objectMapper.writeValueAsString(updatepacket);
-            System.out.println(aaaa);
             worldRepository.getWorld(expo_name).send(updatepacket, objectMapper, session.getId());
         }
         //transform 변환하면 보내는 코드

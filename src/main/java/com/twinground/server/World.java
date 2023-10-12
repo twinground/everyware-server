@@ -32,7 +32,6 @@ public class World {
             send(packet, new ObjectMapper(), sessionId);
         }
     }
-
     public <T> void send(T messageObject, ObjectMapper objectMapper, String excludeUserId) {
         try {
             TextMessage message = new TextMessage(objectMapper.writeValueAsString(messageObject));

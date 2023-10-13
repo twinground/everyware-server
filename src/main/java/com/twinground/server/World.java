@@ -11,12 +11,16 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
 import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 @Getter
 public class World {
     private String name;
-    private final HashSet<SessionPacket> sessions = new HashSet<>();
+    //private final HashSet<SessionPacket> sessions = new HashSet<>();
+    private final Set<SessionPacket> sessions = ConcurrentHashMap.newKeySet();
+
     public static World create(@NonNull String name) {
         World created = new World();
         created.name = name;

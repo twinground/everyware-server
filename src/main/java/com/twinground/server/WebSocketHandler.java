@@ -19,6 +19,8 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 
 @Component
@@ -42,8 +44,10 @@ public class WebSocketHandler extends TextWebSocketHandler{
             bodyObject.setSession_id(session.getId());
             ArrayList<TransformData> transforms = new ArrayList<>();
             String expo_name = bodyObject.getExpo_name();
-            HashSet<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
-            for (SessionPacket sessionPacket : sessions) {
+            Set<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
+            Iterator<SessionPacket> sessionPacketIterator = sessions.iterator();
+            while (sessionPacketIterator.hasNext()) {
+                SessionPacket sessionPacket = sessionPacketIterator.next();
                 if (!sessionPacket.getWebSocketSession().getId().equals(session.getId())) {
                     TransformBody tmp = (TransformBody) sessionPacket.getPacket().getBody();
                     transforms.add(tmp.toTransformData());
@@ -72,9 +76,11 @@ public class WebSocketHandler extends TextWebSocketHandler{
             Packet updatepacket = new Packet(id, bodyObject);
             String sessionId = session.getId();
             String expo_name = bodyObject.getExpo_name();
-            HashSet<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
-            for (SessionPacket sessionPacket : sessions) {
-                if (sessionPacket.getWebSocketSession().getId().equals(session.getId())) {
+            Set<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
+            Iterator<SessionPacket> sessionPacketIterator = sessions.iterator();
+            while (sessionPacketIterator.hasNext()) {
+                SessionPacket sessionPacket = sessionPacketIterator.next();
+                if (sessionPacket.getWebSocketSession().getId().equals(sessionId)) {
                     sessionPacket.setPacket(updatepacket);
                     break;
                 }
@@ -107,6 +113,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
         String connectionJson = objectMapper.writeValueAsString(packet);
         TextMessage textMessage = new TextMessage(connectionJson);
         worldRepository.remove(session);
+
     }
 
     @Override

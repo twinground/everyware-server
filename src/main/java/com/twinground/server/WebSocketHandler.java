@@ -56,7 +56,9 @@ public class WebSocketHandler extends TextWebSocketHandler{
             SessionPacket sessionPacket= new SessionPacket(session, defaultPacket);
             String connectionJson = objectMapper.writeValueAsString(updatepacket);
             TextMessage textMessage = new TextMessage(connectionJson);
-            session.sendMessage(textMessage);
+            synchronized(session) {
+                session.sendMessage(textMessage);
+            }
             sessions.add(sessionPacket);
             ArrayList<TransformData> transforms1 = new ArrayList<>();
             transforms1.add(initTransformBody.toTransformData());
@@ -92,7 +94,9 @@ public class WebSocketHandler extends TextWebSocketHandler{
         Packet packet = new Packet(0, initBody);
         String connectionJson = objectMapper.writeValueAsString(packet);
         TextMessage textMessage = new TextMessage(connectionJson);
-        session.sendMessage(textMessage);
+        synchronized(session) {
+            session.sendMessage(textMessage);
+        }
     }
 
     @Override
@@ -107,6 +111,7 @@ public class WebSocketHandler extends TextWebSocketHandler{
 
     @Override
     public void handleTransportError(WebSocketSession session, Throwable exception) throws Exception {
+        log.error("WebSocket transport error: " + exception.getMessage(), exception);
     }
 
 

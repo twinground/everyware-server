@@ -12,7 +12,9 @@ import java.io.IOException;
 public class WebSocketUtils {
     public void sendMessage(WebSocketSession session, TextMessage message) {
         try {
-            session.sendMessage(message);
+            synchronized(session) {
+                session.sendMessage(message);
+            }
         } catch (IOException e) {
             log.error(e.getMessage(), e);
         }

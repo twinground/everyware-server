@@ -90,10 +90,8 @@ public class WebSocketHandler extends TextWebSocketHandler{
         } else if (id == 4) {
             ChattingBody bodyObject = objectMapper.treeToValue(jsonNode.get("body"), ChattingBody.class);
             Packet chattingPacket = new Packet(id, bodyObject);
-            String sessionId = session.getId();
             String expo_name = bodyObject.getExpo_name();
-            Set<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
-
+            worldRepository.getWorld(expo_name).sendAll(chattingPacket,objectMapper);
         }
 
     }

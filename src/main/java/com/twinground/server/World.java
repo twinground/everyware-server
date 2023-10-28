@@ -47,7 +47,7 @@ public class World {
         }
     }
 
-    public <T> void sendAll(T messageObject, ObjectMapper objectMapper, String excludeUserId) {
+    public <T> void sendAll(T messageObject, ObjectMapper objectMapper) {
         try {
             TextMessage message = new TextMessage(objectMapper.writeValueAsString(messageObject));
             sessions.parallelStream()

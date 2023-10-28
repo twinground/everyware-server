@@ -1,6 +1,7 @@
 package com.twinground.server;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.twinground.model.packet.ChattingBody;
 import com.twinground.model.packet.ConnectionBody;
 import com.twinground.model.packet.InitBody;
 import com.twinground.model.packet.Packet;
@@ -86,6 +87,13 @@ public class WebSocketHandler extends TextWebSocketHandler{
                 }
             }
             worldRepository.getWorld(expo_name).send(updatepacket,objectMapper,sessionId);
+        } else if (id == 4) {
+            ChattingBody bodyObject = objectMapper.treeToValue(jsonNode.get("body"), ChattingBody.class);
+            Packet chattingPacket = new Packet(id, bodyObject);
+            String sessionId = session.getId();
+            String expo_name = bodyObject.getExpo_name();
+            Set<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
+
         }
 
     }

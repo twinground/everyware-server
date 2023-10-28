@@ -47,4 +47,14 @@ public class World {
         }
     }
 
+    public <T> void sendAll(T messageObject, ObjectMapper objectMapper, String excludeUserId) {
+        try {
+            TextMessage message = new TextMessage(objectMapper.writeValueAsString(messageObject));
+            sessions.parallelStream()
+                    .forEach(session -> WebSocketUtils.sendMessage(session.getWebSocketSession(), message));
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e.getMessage(), e);
+        }
+    }
+
 }

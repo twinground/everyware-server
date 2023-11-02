@@ -1,4 +1,4 @@
-package com.twinground.server;
+package com.everyware;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;

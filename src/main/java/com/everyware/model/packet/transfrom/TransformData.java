@@ -1,9 +1,8 @@
-package com.twinground.model.packet.transfrom;
+package com.everyware.model.packet.transfrom;
 
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 
 @Getter

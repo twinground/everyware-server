@@ -1,4 +1,4 @@
-package com.twinground.model.packet;
+package com.everyware.model.packet;
 
 import lombok.Getter;
 

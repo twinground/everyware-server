@@ -1,18 +1,14 @@
-package com.twinground.server;
+package com.everyware;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.twinground.model.packet.InitBody;
-import com.twinground.model.packet.Packet;
+import com.everyware.model.packet.InitBody;
+import com.everyware.model.packet.Packet;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 import org.springframework.web.socket.TextMessage;
 import org.springframework.web.socket.WebSocketSession;
-import java.util.HashSet;
 import java.util.Set;
-import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Getter

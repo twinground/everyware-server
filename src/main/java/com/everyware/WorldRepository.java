@@ -1,4 +1,4 @@
-package com.twinground.server;
+package com.everyware;
 
 import lombok.Getter;
 import org.springframework.stereotype.Repository;

@@ -1,5 +1,5 @@
-package com.twinground.model.packet;
-import com.twinground.model.packet.transfrom.TransformData;
+package com.everyware.model.packet;
+import com.everyware.model.packet.transfrom.TransformData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

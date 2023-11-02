@@ -31,3 +31,5 @@ rebel.xml
 /build/
 /build
 .gradletasknamecache
+
+*.yml

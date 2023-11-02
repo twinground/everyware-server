@@ -1,4 +1,4 @@
-package com.twinground.model.packet;
+package com.everyware.model.packet;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,6 +7,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @AllArgsConstructor
-public class InitBody extends body{
-    private String session_id;
+public class Packet {
+    private int type;
+    private body body;
 }

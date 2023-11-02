@@ -1,4 +1,4 @@
-package com.twinground.server;
+package com.everyware;
 
 import lombok.experimental.UtilityClass;
 import lombok.extern.slf4j.Slf4j;

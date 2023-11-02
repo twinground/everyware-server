@@ -1,15 +1,15 @@
-package com.twinground.server;
+package com.everyware;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.twinground.model.packet.ChattingBody;
-import com.twinground.model.packet.ConnectionBody;
-import com.twinground.model.packet.InitBody;
-import com.twinground.model.packet.Packet;
-import com.twinground.model.packet.TransformBody;
-import com.twinground.model.packet.transfrom.ITransform;
-import com.twinground.model.packet.transfrom.Position;
-import com.twinground.model.packet.transfrom.Quaternion;
-import com.twinground.model.packet.transfrom.TransformData;
+import com.everyware.model.packet.ChattingBody;
+import com.everyware.model.packet.ConnectionBody;
+import com.everyware.model.packet.InitBody;
+import com.everyware.model.packet.Packet;
+import com.everyware.model.packet.TransformBody;
+import com.everyware.model.packet.transfrom.ITransform;
+import com.everyware.model.packet.transfrom.Position;
+import com.everyware.model.packet.transfrom.Quaternion;
+import com.everyware.model.packet.transfrom.TransformData;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -19,7 +19,6 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 

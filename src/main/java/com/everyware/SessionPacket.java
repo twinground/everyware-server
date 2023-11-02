@@ -1,6 +1,6 @@
-package com.twinground.server;
+package com.everyware;
 
-import com.twinground.model.packet.Packet;
+import com.everyware.model.packet.Packet;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;

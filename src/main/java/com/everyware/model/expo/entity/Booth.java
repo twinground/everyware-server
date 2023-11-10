@@ -1,5 +1,7 @@
 package com.everyware.model.expo.entity;
 
+import com.everyware.model.comment.entity.Comment;
+import com.everyware.model.like.entity.Like;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;

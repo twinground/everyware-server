@@ -1,7 +1,6 @@
 package com.everyware.model.expo;
 
 import com.everyware.model.expo.dto.BoothResponseDTO;
-import com.everyware.model.expo.dto.ExpoBoothsResponseDTO;
 import com.everyware.model.expo.dto.ExpoResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;

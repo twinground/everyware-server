@@ -7,6 +7,12 @@ plugins {
 group = 'com.myang'
 version = '0.0.1-SNAPSHOT'
 
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor
+	}
+}
+
 java {
 	sourceCompatibility = '11'
 }
@@ -21,11 +27,15 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'org.springframework.boot:spring-boot-starter-oauth2-client'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	implementation group: 'org.hibernate', name: 'hibernate-spatial', version: '5.6.15.Final'
 	implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.0.1.RELEASE' // s3 설정
 	implementation 'org.springdoc:springdoc-openapi-ui:1.6.9'
+	implementation 'com.auth0:java-jwt:4.2.1'
+	implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.7.1'
 
 }
 

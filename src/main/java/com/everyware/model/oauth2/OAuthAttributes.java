@@ -1,10 +1,11 @@
 package com.everyware.model.oauth2;
 
-
 import com.everyware.model.member.Role;
 import com.everyware.model.member.SocialType;
 import com.everyware.model.member.User;
 import com.everyware.model.oauth2.userinfo.GoogleOAuth2UserInfo;
+import com.everyware.model.oauth2.userinfo.KakaoOAuth2UserInfo;
+import com.everyware.model.oauth2.userinfo.NaverOAuth2UserInfo;
 import com.everyware.model.oauth2.userinfo.OAuth2UserInfo;
 import lombok.Builder;
 import lombok.Getter;
@@ -36,14 +37,34 @@ public class OAuthAttributes {
      */
     public static OAuthAttributes of(SocialType socialType,
             String userNameAttributeName, Map<String, Object> attributes) {
+
+        if (socialType == SocialType.NAVER) {
+            return ofNaver(userNameAttributeName, attributes);
+        }
+        if (socialType == SocialType.KAKAO) {
+            return ofKakao(userNameAttributeName, attributes);
+        }
         return ofGoogle(userNameAttributeName, attributes);
     }
 
+    private static OAuthAttributes ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributes.builder()
+                .nameAttributeKey(userNameAttributeName)
+                .oauth2UserInfo(new KakaoOAuth2UserInfo(attributes))
+                .build();
+    }
 
     public static OAuthAttributes ofGoogle(String userNameAttributeName, Map<String, Object> attributes) {
         return OAuthAttributes.builder()
                 .nameAttributeKey(userNameAttributeName)
                 .oauth2UserInfo(new GoogleOAuth2UserInfo(attributes))
+                .build();
+    }
+
+    public static OAuthAttributes ofNaver(String userNameAttributeName, Map<String, Object> attributes) {
+        return OAuthAttributes.builder()
+                .nameAttributeKey(userNameAttributeName)
+                .oauth2UserInfo(new NaverOAuth2UserInfo(attributes))
                 .build();
     }
 
@@ -59,7 +80,7 @@ public class OAuthAttributes {
                 .socialId(oauth2UserInfo.getId())
                 .email(UUID.randomUUID() + "@socialUser.com")
                 .nickname(oauth2UserInfo.getNickname())
-                //.imageUrl(oauth2UserInfo.getImageUrl())
+                .imageUrl(oauth2UserInfo.getImageUrl())
                 .role(Role.USER)
                 .build();
     }

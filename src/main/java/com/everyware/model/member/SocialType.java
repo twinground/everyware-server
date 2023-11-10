@@ -2,7 +2,6 @@ package com.everyware.model.member;
 
 
 public enum SocialType {
-    //KAKAO, NAVER,
-    GOOGLE
+    KAKAO, NAVER,GOOGLE
 }
 

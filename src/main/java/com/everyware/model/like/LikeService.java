@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 public class LikeService {
 
     private final LikeRepository likeRepository;
-    private final BoothRepository boothRepository;
     private final BoothService boothService;
 
     public void addLike(Long boardId, User user) {
@@ -31,4 +30,5 @@ public class LikeService {
         }
 
     }
+
 }

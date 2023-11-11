@@ -8,5 +8,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface BoothRepository extends JpaRepository<Booth, Long> {
     Optional<Booth> findById(Long id);
-
 }

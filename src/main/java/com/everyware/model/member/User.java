@@ -1,12 +1,20 @@
 package com.everyware.model.member;
 
+import com.everyware.model.comment.entity.Comment;
+import com.everyware.model.like.entity.Like;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -19,7 +27,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Entity
 @Builder
-@Table(name = "USERS")
+@Table(name = "member")
 @AllArgsConstructor
 public class User {
 
@@ -46,6 +54,14 @@ public class User {
     private String socialId; // 로그인한 소셜 타입의 식별자 값 (일반 로그인인 경우 null)
 
     private String refreshToken; // 리프레시 토큰
+
+    @OneToMany(mappedBy = "user")
+    private List<Like> likes = new ArrayList<>();
+
+    @OneToMany(mappedBy = "user")
+    private List<Comment> comments = new ArrayList<>();
+
+
 
     // 유저 권한 설정 메소드
     public void authorizeUser() {

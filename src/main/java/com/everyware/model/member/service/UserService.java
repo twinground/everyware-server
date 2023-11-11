@@ -1,5 +1,7 @@
 package com.everyware.model.member.service;
 
+import com.everyware.BaseException;
+import com.everyware.ErrorCode;
 import com.everyware.model.member.Role;
 import com.everyware.model.member.User;
 import com.everyware.model.member.dto.UserSignUpRequestDto;
@@ -36,5 +38,12 @@ public class UserService {
 
         user.passwordEncode(passwordEncoder);
         userRepository.save(user);
+    }
+    public User findByEmail(String email){
+        User user =
+                userRepository
+                        .findByEmail(email)
+                        .orElseThrow(() -> BaseException.from(ErrorCode.USER_NOT_FOUND));
+        return user;
     }
 }

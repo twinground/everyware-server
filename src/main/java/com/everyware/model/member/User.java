@@ -55,7 +55,7 @@ public class User {
 
     private String refreshToken; // 리프레시 토큰
 
-    @OneToMany(mappedBy = "member")
+    @OneToMany(mappedBy = "user")
     private List<Like> likes = new ArrayList<>();
 
 

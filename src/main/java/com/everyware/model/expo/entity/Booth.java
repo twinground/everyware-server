@@ -32,6 +32,9 @@ public class Booth extends BaseEntity{
     @Column(name = "introduction")
     private String introduction;
 
+    @Column(name = "count")
+    private Integer likeCount = 0;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expo_id", nullable = false)
     private Expo expo;
@@ -44,4 +47,17 @@ public class Booth extends BaseEntity{
 
     @OneToMany(mappedBy = "booth")
     private List<BoothMaterial> boothMaterials = new ArrayList<>();
+
+    public void setLikeCount(Integer likeCount) {
+        if (likeCount == null){
+            this.likeCount = 0;
+        }
+        else{
+            this.likeCount = likeCount;
+        }
+    }
+
+    public Integer getLikeCount() {
+        return likeCount;
+    }
 }

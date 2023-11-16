@@ -30,6 +30,8 @@ public class Expo extends BaseEntity{
     @Column(name = "introduction")
     private String introduction;
 
+    //URL 추가하기
+
     @OneToMany(mappedBy = "expo")
     private List<Booth> booths = new ArrayList<>();
 }

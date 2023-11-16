@@ -24,6 +24,9 @@ import org.springframework.security.crypto.factory.PasswordEncoderFactories;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 /**
  * 인증은 CustomJsonUsernamePasswordAuthenticationFilter에서 authenticate()로 인증된 사용자로 처리
@@ -50,19 +53,17 @@ public class SecurityConfig {
                 .csrf().disable() // csrf 보안 사용 X
                 .headers().frameOptions().disable()
                 .and()
-
                 // 세션 사용하지 않으므로 STATELESS로 설정
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
                 .and()
-
                 //== URL별 권한 관리 옵션 ==//
                 .authorizeRequests()
-
                 // 아이콘, css, js 관련
                 // 기본 페이지, css, image, js 하위 폴더에 있는 자료들은 모두 접근 가능, h2-console에 접근 가능
                 .antMatchers("/","/css/**","/images/**","/js/**","/favicon.ico","/h2-console/**").permitAll()
                 .antMatchers("/signUp").permitAll() // 회원가입 접근 가능
+                .antMatchers("/api/expos").permitAll()
+                .antMatchers("/api/expos/**").permitAll()
                 .anyRequest().authenticated() // 위의 경로 이외에는 모두 인증된 사용자만 접근 가능
                 .and()
                 //== 소셜 로그인 설정 ==//
@@ -138,4 +139,17 @@ public class SecurityConfig {
         JwtAuthenticationProcessingFilter jwtAuthenticationFilter = new JwtAuthenticationProcessingFilter(jwtService, userRepository);
         return jwtAuthenticationFilter;
     }
+    /*
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOriginPattern("*");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }*/
 }

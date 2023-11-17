@@ -1,43 +1,77 @@
 package com.everyware.model.member.controller;
 
-import com.everyware.model.jwt.TokenInfo;
+import com.everyware.model.jwt.Helper;
+import com.everyware.model.jwt.JwtTokenProvider;
+import com.everyware.model.member.dto.Response;
 import com.everyware.model.member.dto.UserLoginRequestDTO;
 import com.everyware.model.member.dto.UserSignUpRequestDto;
-import com.everyware.model.member.service.MemberService;
 import com.everyware.model.member.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
+
+@Slf4j
 @RequiredArgsConstructor
+@RestController
 public class UserController {
 
-    private final UserService userService;
-    private final MemberService memberService;
+    private final JwtTokenProvider jwtTokenProvider;
+    private final UserService usersService;
+    private final Response response;
 
-    @CrossOrigin
-    @PostMapping("/signUp")
-    public ResponseEntity signUp(@RequestBody UserSignUpRequestDto userSignUpRequestDto) throws Exception {
-        try {
-            userService.signUp(userSignUpRequestDto);
-            return ResponseEntity.ok("회원가입 성공");
+    @PostMapping("/sign-up")
+    public ResponseEntity<?> signUp (@Validated @RequestBody UserSignUpRequestDto signUp, Errors errors) {
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
         }
-        catch (Exception e){
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("회원가입 실패: " + e.getMessage());
-        }
+        return usersService.signUp(signUp);
     }
+
     @PostMapping("/login")
-    public TokenInfo login(@RequestBody UserLoginRequestDTO memberLoginRequestDto) {
-        String memberId = memberLoginRequestDto.getEmail();
-        String password = memberLoginRequestDto.getPassword();
-        TokenInfo tokenInfo = memberService.login(memberId, password);
-        return tokenInfo;
+    public ResponseEntity<?> login(@Validated @RequestBody UserLoginRequestDTO userLoginRequestDTO, Errors errors) {
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return usersService.login(userLoginRequestDTO);
+    }
+
+    /*
+    @PostMapping("/reissue")
+    public ResponseEntity<?> reissue(@Validated UserRequestDto.Reissue reissue, Errors errors) {
+        // validation check
+        if (errors.hasErrors()) {
+            return response.invalidFields(Helper.refineErrors(errors));
+        }
+        return usersService.reissue(reissue);
     }
 
 
+     */
+
+    @GetMapping("/authority")
+    public ResponseEntity<?> authority() {
+        log.info("ADD ROLE_ADMIN");
+        return usersService.authority();
+    }
+
+    @GetMapping("/userTest")
+    public ResponseEntity<?> userTest() {
+        log.info("ROLE_USER TEST");
+        return response.success();
+    }
+
+    @GetMapping("/adminTest")
+    public ResponseEntity<?> adminTest() {
+        log.info("ROLE_ADMIN TEST");
+        return response.success();
+    }
 }

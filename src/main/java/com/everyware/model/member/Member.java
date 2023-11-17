@@ -13,6 +13,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import lombok.Setter;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
@@ -25,9 +26,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Getter
+@Builder
+@Setter
 @NoArgsConstructor
 @Entity
-@Builder
 @Table(name = "member")
 @AllArgsConstructor
 public class Member implements UserDetails {
@@ -37,8 +39,11 @@ public class Member implements UserDetails {
     @Column(name = "user_id")
     private Long id;
 
+    @Column
     private String email; // 이메일
+    @Column
     private String password; // 비밀번호
+    @Column
     private String nickname; // 닉네임
 
     @Column

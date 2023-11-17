@@ -1,5 +1,7 @@
 package com.everyware.model.like;
 
+import static com.everyware.model.jwt.SecurityUtil.getCurrentUserEmail;
+
 import com.everyware.model.expo.BoothService;
 import com.everyware.model.member.Member;
 import com.everyware.model.member.service.UserService;
@@ -16,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/heart")
+@RequestMapping("/api/like")
 public class LikeController {
 
     private final LikeService likeService;
@@ -24,10 +26,8 @@ public class LikeController {
     private final BoothService boothService;
 
     @PostMapping("{boothId}")
-    public ResponseEntity addLike(Authentication authentication, @PathVariable("boothId")Long boothId) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Member member = userService.findByEmail(userDetails.getUsername());
-        likeService.addLike(boothId, member);
+    public ResponseEntity addLike(@PathVariable("boothId")Long boothId) {
+        likeService.addLike(boothId, getCurrentUserEmail());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @GetMapping("{boothId}")

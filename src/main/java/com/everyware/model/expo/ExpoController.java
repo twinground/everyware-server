@@ -13,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,16 +27,19 @@ public class ExpoController {
 
     private final ExpoService expoService;
 
+    @CrossOrigin
     @Operation(summary = "엑스포들 조회  API")
     @ApiResponses({
             @ApiResponse(responseCode = "200", description = "엑스포 조회 성공한 경우"),
     })
+
     @GetMapping
     public ResponseEntity<Page<ExpoResponseDTO>> getExpos(
-            @PageableDefault(size = 8, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable) {
+            @PageableDefault(size = 8, direction = Sort.Direction.DESC) Pageable pageable) {
         return ResponseEntity.ok(expoService.getExpos(pageable));
     }
 
+    @CrossOrigin
     @Operation(summary = "엑스포 내부 부스 조회 API")
     @ApiResponse(responseCode = "200", description = "부스들 조회 성공한 경우")
     @GetMapping("/{expo_id}")

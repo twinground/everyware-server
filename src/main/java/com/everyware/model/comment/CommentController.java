@@ -2,7 +2,7 @@ package com.everyware.model.comment;
 
 import com.everyware.model.comment.dto.CommentResponseDTO;
 import com.everyware.model.comment.dto.CreateCommentRequestDTO;
-import com.everyware.model.member.User;
+import com.everyware.model.member.Member;
 import com.everyware.model.member.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -36,8 +36,9 @@ public class CommentController {
             @RequestBody CreateCommentRequestDTO createCommentRequestDto,
             Authentication authentication) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User user = userService.findByEmail(userDetails.getUsername());
-        CommentResponseDTO commentResponseDTO = commentService.createComment(createCommentRequestDto, boothId, user);
+        Member member = userService.findByEmail(userDetails.getUsername());
+        CommentResponseDTO commentResponseDTO = commentService.createComment(createCommentRequestDto, boothId,
+                member);
         return ResponseEntity.ok(commentResponseDTO);
     }
 }

@@ -1,7 +1,7 @@
 package com.everyware.model.like.entity;
 
 import com.everyware.model.expo.entity.Booth;
-import com.everyware.model.member.User;
+import com.everyware.model.member.Member;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -24,15 +24,15 @@ public class Like {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Member member;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "booth_id", nullable = false)
     private Booth booth;
 
 
-    public Like(User user, Booth booth) {
-        this.user = user;
+    public Like(Member member, Booth booth) {
+        this.member = member;
         this.booth = booth;
     }
 }

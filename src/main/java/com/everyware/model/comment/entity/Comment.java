@@ -2,7 +2,7 @@ package com.everyware.model.comment.entity;
 
 import com.everyware.model.expo.entity.BaseEntity;
 import com.everyware.model.expo.entity.Booth;
-import com.everyware.model.member.User;
+import com.everyware.model.member.Member;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -36,7 +36,7 @@ public class Comment extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
-    private User user;
+    private Member member;
 
 
     public void setId(Long id) {
@@ -53,8 +53,8 @@ public class Comment extends BaseEntity {
         this.content = content;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setMember(Member member) {
+        this.member = member;
     }
 
     public void setBooth(Booth booth) {

@@ -1,8 +1,7 @@
 package com.everyware.model.like;
 
 import com.everyware.model.expo.BoothService;
-import com.everyware.model.jwt.service.JwtService;
-import com.everyware.model.member.User;
+import com.everyware.model.member.Member;
 import com.everyware.model.member.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -27,8 +26,8 @@ public class LikeController {
     @PostMapping("{boothId}")
     public ResponseEntity addLike(Authentication authentication, @PathVariable("boothId")Long boothId) {
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        User user = userService.findByEmail(userDetails.getUsername());
-        likeService.addLike(boothId,user);
+        Member member = userService.findByEmail(userDetails.getUsername());
+        likeService.addLike(boothId, member);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
     @GetMapping("{boothId}")

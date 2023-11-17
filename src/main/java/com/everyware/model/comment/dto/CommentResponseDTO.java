@@ -12,7 +12,7 @@ public class CommentResponseDTO {
 
     public static CommentResponseDTO from(Comment comment) {
         return CommentResponseDTO.builder()
-                .userNickname(comment.getUser().getNickname())
+                .userNickname(comment.getMember().getNickname())
                 .content(comment.getContent())
                 .build();
     }

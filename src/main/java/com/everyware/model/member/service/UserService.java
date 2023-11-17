@@ -2,10 +2,9 @@ package com.everyware.model.member.service;
 
 import com.everyware.BaseException;
 import com.everyware.ErrorCode;
-import com.everyware.model.member.Role;
-import com.everyware.model.member.User;
+import com.everyware.model.member.Member;
 import com.everyware.model.member.dto.UserSignUpRequestDto;
-import com.everyware.model.member.repository.UserRepository;
+import com.everyware.model.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -16,34 +15,33 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class UserService {
 
-    private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     public void signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception {
 
-        if (userRepository.findByEmail(userSignUpRequestDto.getEmail()).isPresent()) {
+        if (memberRepository.findByEmail(userSignUpRequestDto.getEmail()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
-        if (userRepository.findByNickname(userSignUpRequestDto.getNickname()).isPresent()) {
+        if (memberRepository.findByNickname(userSignUpRequestDto.getNickname()).isPresent()) {
             throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         }
 
-        User user = User.builder()
+        Member member = Member.builder()
                 .email(userSignUpRequestDto.getEmail())
                 .password(userSignUpRequestDto.getPassword())
                 .nickname(userSignUpRequestDto.getNickname())
-                .role(Role.USER)
                 .build();
-        user.passwordEncode(passwordEncoder);
-        userRepository.save(user);
+        member.passwordEncode(passwordEncoder);
+        memberRepository.save(member);
     }
 
-    public User findByEmail(String email) {
-        User user =
-                userRepository
+    public Member findByEmail(String email) {
+        Member member =
+                memberRepository
                         .findByEmail(email)
                         .orElseThrow(() -> BaseException.from(ErrorCode.USER_NOT_FOUND));
-        return user;
+        return member;
     }
 }

@@ -2,12 +2,10 @@ package com.everyware.model.comment;
 
 import com.everyware.model.comment.dto.CommentResponseDTO;
 import com.everyware.model.comment.dto.CreateCommentRequestDTO;
-import com.everyware.model.comment.dto.CreateCommentResponseDTO;
 import com.everyware.model.comment.entity.Comment;
-import com.everyware.model.expo.BoothRepository;
 import com.everyware.model.expo.BoothService;
 import com.everyware.model.expo.entity.Booth;
-import com.everyware.model.member.User;
+import com.everyware.model.member.Member;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
@@ -29,13 +27,13 @@ public class CommentService {
         System.out.println(commentResponseDTOS.toString());
         return commentResponseDTOS;
     }
-    public CommentResponseDTO createComment(CreateCommentRequestDTO createClubRequestDTO, Long boothId, User user) {
+    public CommentResponseDTO createComment(CreateCommentRequestDTO createClubRequestDTO, Long boothId, Member member) {
 
         Comment comment = Comment.builder().content(createClubRequestDTO.getContent()).build();
         System.out.println(createClubRequestDTO.getContent());
         Booth booth = boothService.findById(boothId);
         comment.setBooth(booth);
-        comment.setUser(user);
+        comment.setMember(member);
         commentRepository.save(comment);
         CommentResponseDTO commentResponseDTO = CommentResponseDTO.from(comment);
         return commentResponseDTO;

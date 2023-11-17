@@ -1,5 +1,8 @@
 package com.everyware.model.comment;
 
+import static com.everyware.model.jwt.SecurityUtil.getCurrentUserEmail;
+
+import com.everyware.model.comment.dto.CommentCountResponseDTO;
 import com.everyware.model.comment.dto.CommentResponseDTO;
 import com.everyware.model.comment.dto.CreateCommentRequestDTO;
 import com.everyware.model.member.Member;
@@ -7,8 +10,6 @@ import com.everyware.model.member.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,15 +31,18 @@ public class CommentController {
                 boothId);
         return ResponseEntity.ok(commentResponseDTOS);
     }
+    @GetMapping("/{boothId}/count")
+    public ResponseEntity getBoothCommentsCount(@PathVariable Long boothId) {
+        CommentCountResponseDTO commentResponseDTOS = commentService.getCommentsCountByBoothId(boothId);
+        return ResponseEntity.ok(commentResponseDTOS);
+    }
 
     @PostMapping("/{boothId}")
     public ResponseEntity createBoothComments(@PathVariable Long boothId,
-            @RequestBody CreateCommentRequestDTO createCommentRequestDto,
-            Authentication authentication) {
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-        Member member = userService.findByEmail(userDetails.getUsername());
+            @RequestBody CreateCommentRequestDTO createCommentRequestDto
+            ) {
         CommentResponseDTO commentResponseDTO = commentService.createComment(createCommentRequestDto, boothId,
-                member);
+                getCurrentUserEmail());
         return ResponseEntity.ok(commentResponseDTO);
     }
 }

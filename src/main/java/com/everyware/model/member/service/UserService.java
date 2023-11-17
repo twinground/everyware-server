@@ -121,4 +121,5 @@ public class UserService {
                         .orElseThrow(() -> BaseException.from(ErrorCode.USER_NOT_FOUND));
         return member;
     }
+
 }

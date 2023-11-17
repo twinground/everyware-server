@@ -49,8 +49,10 @@ public class Comment extends BaseEntity {
 
     @Builder
     private Comment(
-            String content) {
+            String content, Member member, Booth booth) {
         this.content = content;
+        this.member = member;
+        this.booth = booth;
     }
 
     public void setMember(Member member) {

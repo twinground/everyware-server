@@ -7,12 +7,12 @@ import lombok.Getter;
 @Builder
 @Getter
 public class CommentResponseDTO {
-    String userNickname;
+    String nickname;
     String content;
 
     public static CommentResponseDTO from(Comment comment) {
         return CommentResponseDTO.builder()
-                .userNickname(comment.getMember().getNickname())
+                .nickname(comment.getMember().getNickname())
                 .content(comment.getContent())
                 .build();
     }

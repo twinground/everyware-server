@@ -13,14 +13,10 @@ public class BoothMaterialResponseDTO {
     private String link;
     private BoothMaterialType type;
 
-    private String name;
-
-
     public static BoothMaterialResponseDTO from(BoothMaterial boothMaterial) {
         return BoothMaterialResponseDTO.builder()
                 .link(boothMaterial.getLink())
                 .type(boothMaterial.getType())
-                .name(boothMaterial.getName())
                 .build();
     }
 

@@ -22,11 +22,11 @@ public class UserService {
     public void signUp(UserSignUpRequestDto userSignUpRequestDto) throws Exception {
 
         if (userRepository.findByEmail(userSignUpRequestDto.getEmail()).isPresent()) {
-            throw new Exception("이미 존재하는 이메일입니다.");
+            throw new IllegalArgumentException("이미 존재하는 이메일입니다.");
         }
 
         if (userRepository.findByNickname(userSignUpRequestDto.getNickname()).isPresent()) {
-            throw new Exception("이미 존재하는 닉네임입니다.");
+            throw new IllegalArgumentException("이미 존재하는 닉네임입니다.");
         }
 
         User user = User.builder()
@@ -35,11 +35,11 @@ public class UserService {
                 .nickname(userSignUpRequestDto.getNickname())
                 .role(Role.USER)
                 .build();
-
         user.passwordEncode(passwordEncoder);
         userRepository.save(user);
     }
-    public User findByEmail(String email){
+
+    public User findByEmail(String email) {
         User user =
                 userRepository
                         .findByEmail(email)

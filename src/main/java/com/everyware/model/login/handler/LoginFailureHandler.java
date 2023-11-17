@@ -8,6 +8,7 @@ import org.springframework.security.web.authentication.SimpleUrlAuthenticationFa
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import org.springframework.web.bind.annotation.CrossOrigin;
 
 /**
  * JWT 로그인 실패 시 처리하는 핸들러 SimpleUrlAuthenticationFailureHandler를 상속받아서 구현

@@ -1,5 +1,6 @@
 package com.everyware.model.expo.entity;
 
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -16,15 +17,12 @@ import lombok.Getter;
 @Entity
 @Getter
 @Table(name = "booth_material")
-public class BoothMaterial extends BaseEntity{
+public class BoothMaterial extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "booth_material_id")
     private Long id;
-
-    @Column(name = "booth_material_title")
-    private String name;
 
     @Column(name = "booth_material_link")
     private String link;
@@ -44,4 +42,5 @@ public class BoothMaterial extends BaseEntity{
     public Long getId() {
         return id;
     }
+
 }

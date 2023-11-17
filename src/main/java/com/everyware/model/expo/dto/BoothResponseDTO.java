@@ -12,21 +12,15 @@ import lombok.Getter;
 public class BoothResponseDTO {
 
     private Long id;
-
     private String title;
-
-    private String introduction;
-
-    private List<BoothMaterialResponseDTO> boothMaterials;
+    private BoothMaterialsResponseDTO boothMaterials;
 
     public static BoothResponseDTO from(Booth booth) {
         return BoothResponseDTO.builder()
                 .id(booth.getId())
                 .title(booth.getTitle())
-                .introduction(booth.getIntroduction())
-                .boothMaterials(
-                        booth.getBoothMaterials().stream().map(BoothMaterialResponseDTO::from)
-                                .collect(
-                                        Collectors.toList())).build();
+                .boothMaterials(BoothMaterialsResponseDTO.from(booth))
+                .build();
     }
 }
+

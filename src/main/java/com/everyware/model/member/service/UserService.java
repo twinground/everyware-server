@@ -44,6 +44,7 @@ public class UserService {
         Member user = Member.builder()
                 .email(signUp.getEmail())
                 .password(passwordEncoder.encode(signUp.getPassword()))
+                .nickname(signUp.getNickname())
                 .roles(Collections.singletonList(Authority.ROLE_USER.name()))
                 .build();
         memberRepository.save(user);

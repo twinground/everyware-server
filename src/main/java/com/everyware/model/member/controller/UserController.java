@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,6 +29,7 @@ public class UserController {
     private final UserService usersService;
     private final Response response;
 
+    @CrossOrigin
     @PostMapping("/sign-up")
     public ResponseEntity<?> signUp (@Validated @RequestBody UserSignUpRequestDto signUp, Errors errors) {
         if (errors.hasErrors()) {
@@ -36,6 +38,7 @@ public class UserController {
         return usersService.signUp(signUp);
     }
 
+    @CrossOrigin
     @PostMapping("/login")
     public ResponseEntity<?> login(@Validated @RequestBody UserLoginRequestDTO userLoginRequestDTO, Errors errors) {
         if (errors.hasErrors()) {
@@ -57,6 +60,7 @@ public class UserController {
 
      */
 
+    /*
     @GetMapping("/authority")
     public ResponseEntity<?> authority() {
         log.info("ADD ROLE_ADMIN");
@@ -74,4 +78,6 @@ public class UserController {
         log.info("ROLE_ADMIN TEST");
         return response.success();
     }
+
+     */
 }

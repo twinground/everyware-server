@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,18 +19,19 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/like")
+@RequestMapping("/api/likes")
 public class LikeController {
 
     private final LikeService likeService;
-    private final UserService userService;
     private final BoothService boothService;
 
+    @CrossOrigin
     @PostMapping("{boothId}")
     public ResponseEntity addLike(@PathVariable("boothId")Long boothId) {
         likeService.addLike(boothId, getCurrentUserEmail());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
+    @CrossOrigin
     @GetMapping("{boothId}")
     public ResponseEntity getLikeCount(@PathVariable("boothId")Long boothId) {
         return ResponseEntity.ok(boothService.getLikeCountById(boothId));

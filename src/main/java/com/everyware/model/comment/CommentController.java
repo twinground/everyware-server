@@ -10,6 +10,7 @@ import com.everyware.model.member.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,24 +20,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/comment")
+@RequestMapping("/api/comments")
 public class CommentController {
 
     private final CommentService commentService;
     private final UserService userService;
 
+    @CrossOrigin
     @GetMapping("/{boothId}")
     public ResponseEntity getBoothComments(@PathVariable Long boothId) {
         List<CommentResponseDTO> commentResponseDTOS = commentService.getAllCommentsByBoothId(
                 boothId);
         return ResponseEntity.ok(commentResponseDTOS);
     }
+    @CrossOrigin
     @GetMapping("/{boothId}/count")
     public ResponseEntity getBoothCommentsCount(@PathVariable Long boothId) {
         CommentCountResponseDTO commentResponseDTOS = commentService.getCommentsCountByBoothId(boothId);
         return ResponseEntity.ok(commentResponseDTOS);
     }
 
+    @CrossOrigin
     @PostMapping("/{boothId}")
     public ResponseEntity createBoothComments(@PathVariable Long boothId,
             @RequestBody CreateCommentRequestDTO createCommentRequestDto

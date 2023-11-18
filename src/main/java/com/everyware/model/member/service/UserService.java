@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -52,20 +53,28 @@ public class UserService {
 
     public ResponseEntity<?> login(UserLoginRequestDTO userLoginRequestDTO) {
         if (memberRepository.findByEmail(userLoginRequestDTO.getEmail()).orElse(null) == null) {
-            return response.fail("해당하는 유저가 존재하지 않습니다.", HttpStatus.BAD_REQUEST);
+            return response.fail("아이디(이메일) 또는 비밀번호를 잘못 입력했습니다."
+                    + "입력하신 내용을 다시 확인해주세요.", HttpStatus.BAD_REQUEST);
         }
-        // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
-        // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
-        UsernamePasswordAuthenticationToken authenticationToken = userLoginRequestDTO.toAuthentication();
 
-        // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
-        // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
-        Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+        try {
+            // 1. Login ID/PW 를 기반으로 Authentication 객체 생성
+            // 이때 authentication 는 인증 여부를 확인하는 authenticated 값이 false
+            UsernamePasswordAuthenticationToken authenticationToken = userLoginRequestDTO.toAuthentication();
 
-        // 3. 인증 정보를 기반으로 JWT 토큰 생성
-        TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+            // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
+            // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
+            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
 
-        return response.success(tokenInfo, "로그인에 성공했습니다.", HttpStatus.OK);
+            // 3. 인증 정보를 기반으로 JWT 토큰 생성
+            TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
+
+            return response.success(tokenInfo, "로그인에 성공했습니다.", HttpStatus.OK);
+        } catch (AuthenticationException e) {
+            // Handle authentication failure, e.g., incorrect password
+            return response.fail("아이디(이메일) 또는 비밀번호를 잘못 입력했습니다."
+                    + "입력하신 내용을 다시 확인해주세요.", HttpStatus.UNAUTHORIZED);
+        }
     }
 
     /*

@@ -5,11 +5,14 @@ import static com.everyware.model.jwt.SecurityUtil.getCurrentUserEmail;
 import com.everyware.model.comment.dto.CommentCountResponseDTO;
 import com.everyware.model.comment.dto.CommentResponseDTO;
 import com.everyware.model.comment.dto.CreateCommentRequestDTO;
+import com.everyware.model.jwt.Helper;
 import com.everyware.model.member.Member;
+import com.everyware.model.member.dto.Response;
 import com.everyware.model.member.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,19 +24,19 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/comments")
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CommentController {
 
     private final CommentService commentService;
     private final UserService userService;
+    private final Response response;
 
-    @CrossOrigin
     @GetMapping("/{boothId}")
     public ResponseEntity getBoothComments(@PathVariable Long boothId) {
         List<CommentResponseDTO> commentResponseDTOS = commentService.getAllCommentsByBoothId(
                 boothId);
         return ResponseEntity.ok(commentResponseDTOS);
     }
-    @CrossOrigin
     @GetMapping("/{boothId}/count")
     public ResponseEntity getBoothCommentsCount(@PathVariable Long boothId) {
         CommentCountResponseDTO commentResponseDTOS = commentService.getCommentsCountByBoothId(boothId);
@@ -44,7 +47,7 @@ public class CommentController {
     @PostMapping("/{boothId}")
     public ResponseEntity createBoothComments(@PathVariable Long boothId,
             @RequestBody CreateCommentRequestDTO createCommentRequestDto
-            ) {
+           ) {
         CommentResponseDTO commentResponseDTO = commentService.createComment(createCommentRequestDto, boothId,
                 getCurrentUserEmail());
         return ResponseEntity.ok(commentResponseDTO);

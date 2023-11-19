@@ -18,16 +18,18 @@ public class LikeService {
     private final BoothService boothService;
     private final UserService userService;
 
-    public void addLike(Long boardId, String email) {
+    public boolean addLike(Long boardId, String email) {
 
         Member member = userService.findByEmail(email);
         Booth booth = boothService.findById(boardId);
         if (!likeRepository.existsByMemberAndBooth(member, booth)) {
             booth.setLikeCount(booth.getLikeCount() + 1);
             likeRepository.save(new Like(member, booth));
+            return true;
         } else {
             booth.setLikeCount(booth.getLikeCount() - 1);
             likeRepository.deleteByMemberAndBooth(member, booth);
+            return false;
         }
 
     }

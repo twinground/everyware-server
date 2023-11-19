@@ -47,7 +47,6 @@ public class CommentService {
                 .booth(booth)
                 .build();
         commentRepository.save(comment);
-        System.out.println(comment.getMember().getNickname());
         CommentResponseDTO commentResponseDTO = CommentResponseDTO.from(comment);
         return commentResponseDTO;
     }

@@ -9,6 +9,7 @@ import com.everyware.model.member.Authority;
 import com.everyware.model.member.Member;
 import com.everyware.model.member.dto.Response;
 import com.everyware.model.member.dto.UserLoginRequestDTO;
+import com.everyware.model.member.dto.UserResponseDTO;
 import com.everyware.model.member.dto.UserSignUpRequestDto;
 import com.everyware.model.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -65,12 +66,17 @@ public class UserService {
 
             // 2. 실제 검증 (사용자 비밀번호 체크)이 이루어지는 부분
             // authenticate 매서드가 실행될 때 CustomUserDetailsService 에서 만든 loadUserByUsername 메서드가 실행
-            Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
+            Authentication authentication = authenticationManagerBuilder.getObject()
+                    .authenticate(authenticationToken);
 
             // 3. 인증 정보를 기반으로 JWT 토큰 생성
             TokenInfo tokenInfo = jwtTokenProvider.generateToken(authentication);
-
-            return response.success(tokenInfo, "로그인에 성공했습니다.", HttpStatus.OK);
+            Member member = memberRepository.findByEmail(userLoginRequestDTO.getEmail())
+                    .orElseThrow();
+            return response.success(
+                    UserResponseDTO.builder().tokenInfo(tokenInfo).nickName(member.getNickname())
+                            .build()
+                    , "로그인에 성공했습니다.", HttpStatus.OK);
         } catch (AuthenticationException e) {
             // Handle authentication failure, e.g., incorrect password
             return response.fail("아이디(이메일) 또는 비밀번호를 잘못 입력했습니다."
@@ -124,6 +130,7 @@ public class UserService {
 
         return response.success();
     }
+
     public Member findByEmail(String email) {
         Member member =
                 memberRepository

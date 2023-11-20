@@ -1,19 +1,15 @@
 package com.everyware.model.member.dto;
 
 
+import com.everyware.model.jwt.TokenInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+@Builder
+@Getter
 public class UserResponseDTO {
 
-    @Builder
-    @Getter
-    @AllArgsConstructor
-    public static class TokenInfo {
-        private String grantType;
-        private String accessToken;
-        private String refreshToken;
-        private Long refreshTokenExpirationTime;
-    }
+    TokenInfo tokenInfo;
+    String nickName;
 }

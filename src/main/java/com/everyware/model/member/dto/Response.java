@@ -1,6 +1,9 @@
 package com.everyware.model.member.dto;
 
 
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import lombok.Builder;
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
@@ -20,7 +23,7 @@ public class Response {
 
         private int state;
         private String result;
-        private String massage;
+        private String message;
         private Object data;
         private Object error;
     }
@@ -30,7 +33,7 @@ public class Response {
                 .state(status.value())
                 .data(data)
                 .result("success")
-                .massage(msg)
+                .message(msg)
                 .error(Collections.emptyList())
                 .build();
         return ResponseEntity.ok(body);
@@ -97,11 +100,22 @@ public class Response {
                 .state(status.value())
                 .data(data)
                 .result("fail")
-                .massage(msg)
+                .message(msg)
                 .error(Collections.emptyList())
                 .build();
         return ResponseEntity.ok(body);
     }
+    public ResponseEntity<?> failError(Object data, String msg, HttpStatus status)  {
+        Body body = Body.builder()
+                .state(status.value())
+                .data(Collections.emptyList())
+                .result("fail")
+                .message(msg)
+                .error(data)
+                .build();
+        return ResponseEntity.ok(body);
+    }
+
 
     /**
      * <p> 메세지를 가진 실패 응답을 반환한다. </p>
@@ -120,7 +134,13 @@ public class Response {
      * @return 응답 객체
      */
     public ResponseEntity<?> fail(String msg, HttpStatus status) {
-        return fail(Collections.emptyList(), msg, status);
+        Map<String, String> data = new HashMap<>();
+        data.put("message", msg);
+
+        // Create a list containing the data map
+        List<Map<String, String>> messages = Collections.singletonList(data);
+
+        return failError(messages, msg, status);
     }
 
     public ResponseEntity<?> invalidFields(LinkedList<LinkedHashMap<String, String>> errors) {
@@ -128,7 +148,7 @@ public class Response {
                 .state(HttpStatus.BAD_REQUEST.value())
                 .data(Collections.emptyList())
                 .result("fail")
-                .massage("")
+                .message("")
                 .error(errors)
                 .build();
         return ResponseEntity.ok(body);

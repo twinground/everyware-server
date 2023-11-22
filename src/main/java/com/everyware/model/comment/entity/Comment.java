@@ -38,6 +38,7 @@ public class Comment extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private Member member;
 
+    private Long rate;
 
     public void setId(Long id) {
         this.id = id;
@@ -49,10 +50,11 @@ public class Comment extends BaseEntity {
 
     @Builder
     private Comment(
-            String content, Member member, Booth booth) {
+            String content, Member member, Booth booth, Long rate) {
         this.content = content;
         this.member = member;
         this.booth = booth;
+        this.rate = rate;
     }
 
     public void setMember(Member member) {

@@ -17,13 +17,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/likes")
-@CrossOrigin(origins = "*", allowedHeaders = "*")
+@CrossOrigin
 public class LikeController {
 
     private final LikeService likeService;
     private final BoothService boothService;
     private final Response response;
 
+    @CrossOrigin(origins = "*")
     @PostMapping("{boothId}")
     public ResponseEntity addLike(@PathVariable("boothId") Long boothId) {
         if (likeService.addLike(boothId, getCurrentUserEmail())) {
@@ -33,6 +34,7 @@ public class LikeController {
         }
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("{boothId}")
     public ResponseEntity<?> getLikeCount(@PathVariable("boothId") Long boothId) {
         return response.success(boothService.getLikeCountById(boothId)

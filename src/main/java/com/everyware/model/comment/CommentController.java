@@ -11,6 +11,7 @@ import com.everyware.model.member.dto.Response;
 import com.everyware.model.member.service.UserService;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -35,21 +36,21 @@ public class CommentController {
     public ResponseEntity getBoothComments(@PathVariable Long boothId) {
         List<CommentResponseDTO> commentResponseDTOS = commentService.getAllCommentsByBoothId(
                 boothId);
-        return ResponseEntity.ok(commentResponseDTOS);
+        return response.success(commentResponseDTOS,"댓글들 조회 성공",HttpStatus.OK);
     }
     @GetMapping("/{boothId}/count")
     public ResponseEntity getBoothCommentsCount(@PathVariable Long boothId) {
         CommentCountResponseDTO commentResponseDTOS = commentService.getCommentsCountByBoothId(boothId);
-        return ResponseEntity.ok(commentResponseDTOS);
+        return response.success(commentResponseDTOS,"댓글 개수 조회 성공",HttpStatus.OK);
     }
 
     @CrossOrigin
     @PostMapping("/{boothId}")
-    public ResponseEntity createBoothComments(@PathVariable Long boothId,
+    public ResponseEntity<?> createBoothComments(@PathVariable Long boothId,
             @RequestBody CreateCommentRequestDTO createCommentRequestDto
            ) {
         CommentResponseDTO commentResponseDTO = commentService.createComment(createCommentRequestDto, boothId,
                 getCurrentUserEmail());
-        return ResponseEntity.ok(commentResponseDTO);
+        return response.success(commentResponseDTO,"댓글 생성 성공", HttpStatus.CREATED);
     }
 }

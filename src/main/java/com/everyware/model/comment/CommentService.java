@@ -7,6 +7,7 @@ import com.everyware.model.comment.entity.Comment;
 import com.everyware.model.expo.BoothService;
 import com.everyware.model.expo.entity.Booth;
 import com.everyware.model.member.Member;
+import com.everyware.model.member.dto.Response;
 import com.everyware.model.member.service.UserService;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -41,8 +42,10 @@ public class CommentService {
 
         Booth booth = boothService.findById(boothId);
         Member member = userService.findByEmail(email);
+        System.out.println(createClubRequestDTO.getRate());
         Comment comment = Comment.builder()
-                .content(createClubRequestDTO.getContent())
+                .content(createClubRequestDTO.getComment())
+                .rate(Long.parseLong(createClubRequestDTO.getRate()))
                 .member(member)
                 .booth(booth)
                 .build();

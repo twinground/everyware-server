@@ -8,12 +8,14 @@ import lombok.Getter;
 @Getter
 public class CommentResponseDTO {
     String nickname;
-    String content;
+    String comment;
+    Long rate;
 
     public static CommentResponseDTO from(Comment comment) {
         return CommentResponseDTO.builder()
                 .nickname(comment.getMember().getNickname())
-                .content(comment.getContent())
+                .comment(comment.getContent())
+                .rate(comment.getRate())
                 .build();
     }
 }

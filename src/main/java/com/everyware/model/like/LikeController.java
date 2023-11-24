@@ -3,6 +3,7 @@ package com.everyware.model.like;
 import static com.everyware.model.jwt.SecurityUtil.getCurrentUserEmail;
 
 import com.everyware.model.expo.BoothService;
+import com.everyware.model.like.dto.LikeCountDTO;
 import com.everyware.model.member.dto.Response;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,9 @@ public class LikeController {
     @PostMapping("{boothId}")
     public ResponseEntity addLike(@PathVariable("boothId") Long boothId) {
         if (likeService.addLike(boothId, getCurrentUserEmail())) {
-            return response.success("좋아요 생성 성공");
+            return response.success(LikeCountDTO.builder().count(boothService.getLikeCountById(boothId)).build(), "좋아요 생성 성공",HttpStatus.OK);
         } else {
-            return response.success("좋아요 취소 성공");
+            return response.success(LikeCountDTO.builder().count(boothService.getLikeCountById(boothId)).build(), "좋아요 취소 성공",HttpStatus.OK);
         }
     }
 

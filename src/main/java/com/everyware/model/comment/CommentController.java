@@ -51,6 +51,6 @@ public class CommentController {
            ) {
         CommentResponseDTO commentResponseDTO = commentService.createComment(createCommentRequestDto, boothId,
                 getCurrentUserEmail());
-        return response.success(commentResponseDTO,"댓글 생성 성공", HttpStatus.CREATED);
+        return response.success(commentService.getCommentsCountByBoothId(boothId),"댓글 생성 성공", HttpStatus.CREATED);
     }
 }

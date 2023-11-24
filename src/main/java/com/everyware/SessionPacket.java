@@ -11,5 +11,6 @@ import org.springframework.web.socket.WebSocketSession;
 @Setter
 public class SessionPacket {
     private WebSocketSession webSocketSession;
+    private String user_name;
     private Packet packet;
 }

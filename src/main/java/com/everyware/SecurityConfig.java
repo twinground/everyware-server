@@ -42,6 +42,7 @@ public class SecurityConfig {
                         "/h2-console/**").permitAll()
                 .antMatchers("/sign-up").permitAll()
                 .antMatchers("/login").permitAll()
+                .antMatchers("/health").permitAll()
                 .antMatchers("/api/expos").permitAll()
                 .antMatchers("/api/expos/**").permitAll()
                 .antMatchers("/api/comments/**").permitAll()

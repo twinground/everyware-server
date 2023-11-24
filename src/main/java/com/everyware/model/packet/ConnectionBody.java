@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 public class ConnectionBody extends body {
     private String session_id;
+    private String user_name;
     private String expo_name;
     private List<TransformData> transforms;
 }

@@ -42,6 +42,8 @@ public class WebSocketHandler extends TextWebSocketHandler{
         if (id == 1) {
             ConnectionBody bodyObject = objectMapper.treeToValue(jsonNode.get("body"), ConnectionBody.class);
             bodyObject.setSession_id(session.getId());
+            String nickname = bodyObject.getUser_name();
+            bodyObject.setUser_name(nickname);
             ArrayList<TransformData> transforms = new ArrayList<>();
             String expo_name = bodyObject.getExpo_name();
             Set<SessionPacket> sessions = worldRepository.getWorld(expo_name).getSessions();
@@ -50,14 +52,14 @@ public class WebSocketHandler extends TextWebSocketHandler{
                 SessionPacket sessionPacket = sessionPacketIterator.next();
                 if (!sessionPacket.getWebSocketSession().getId().equals(session.getId())) {
                     TransformBody tmp = (TransformBody) sessionPacket.getPacket().getBody();
-                    transforms.add(tmp.toTransformData());
+                    transforms.add(tmp.toTransformDataFromSession(sessionPacket.getUser_name()));
                 }
             }
             bodyObject.setTransforms(transforms);
             Packet updatepacket = new Packet(id, bodyObject);
-            TransformBody initTransformBody = initTransform(session.getId(), bodyObject.getExpo_name());
+            TransformBody initTransformBody = initTransform(session.getId(), nickname, bodyObject.getExpo_name());
             Packet defaultPacket = new Packet(2, initTransformBody);
-            SessionPacket sessionPacket= new SessionPacket(session, defaultPacket);
+            SessionPacket sessionPacket= new SessionPacket(session, nickname, defaultPacket);
             String connectionJson = objectMapper.writeValueAsString(updatepacket);
             TextMessage textMessage = new TextMessage(connectionJson);
             synchronized(session) {
@@ -127,10 +129,10 @@ public class WebSocketHandler extends TextWebSocketHandler{
     }
 
 
-    private TransformBody initTransform(String sessionId, String expo_name){
+    private TransformBody initTransform(String sessionId, String user_name,String expo_name){
         Position position = new Position(0,0);
         Quaternion quaternion = new Quaternion(0,0);
         ITransform iTransform = new ITransform(position,quaternion,"idle");
-        return new TransformBody(sessionId, expo_name,iTransform);
+        return new TransformBody(sessionId,user_name, expo_name,iTransform);
     }
 }

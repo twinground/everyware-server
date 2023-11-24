@@ -10,6 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 public class TransformData {
     String session_id;
+    String user_name;
     private Position position;
     private Quaternion quaternion;
     private String state;

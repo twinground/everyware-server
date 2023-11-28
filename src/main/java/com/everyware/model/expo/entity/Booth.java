@@ -31,8 +31,14 @@ public class Booth extends BaseEntity {
     @Column(name = "title")
     private String title;
 
+    @Column(name = "meet_link")
+    private String meetLink;
+
     @Column(name = "count")
     private Integer likeCount = 0;
+
+    @Column(name = "admin_phone_number")
+    private String adminPhoneNumber;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "expo_id", nullable = false)

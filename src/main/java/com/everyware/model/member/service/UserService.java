@@ -2,9 +2,9 @@ package com.everyware.model.member.service;
 
 import com.everyware.BaseException;
 import com.everyware.ErrorCode;
-import com.everyware.model.jwt.JwtTokenProvider;
-import com.everyware.model.jwt.SecurityUtil;
-import com.everyware.model.jwt.TokenInfo;
+import com.everyware.common.jwt.JwtTokenProvider;
+import com.everyware.common.jwt.SecurityUtil;
+import com.everyware.common.jwt.TokenInfo;
 import com.everyware.model.member.Authority;
 import com.everyware.model.member.Member;
 import com.everyware.model.member.dto.Response;

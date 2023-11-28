@@ -9,12 +9,18 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.everyware.common.entity.BaseEntity;
+import com.everyware.model.expo.booth.booth.entity.Booth;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Entity
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "expo")
-public class Expo extends BaseEntity{
+public class Expo extends BaseEntity {
 
     @Id
     @Column(name = "expo_id")
@@ -31,7 +37,6 @@ public class Expo extends BaseEntity{
     private String introduction;
 
     //URL 추가하기
-
     @OneToMany(mappedBy = "expo")
     private List<Booth> booths = new ArrayList<>();
 }

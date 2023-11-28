@@ -1,7 +1,8 @@
 package com.everyware.model.member;
 
-import com.everyware.model.comment.entity.Comment;
-import com.everyware.model.like.entity.Like;
+import com.everyware.model.expo.booth.comment.entity.Comment;
+import com.everyware.common.entity.BaseEntity;
+import com.everyware.model.expo.booth.like.entity.Like;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -32,7 +33,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Entity
 @Table(name = "member")
 @AllArgsConstructor
-public class Member implements UserDetails {
+public class Member extends BaseEntity implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

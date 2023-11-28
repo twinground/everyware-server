@@ -1,7 +1,8 @@
 package com.everyware.model.member.controller;
 
-import com.everyware.model.jwt.Helper;
-import com.everyware.model.jwt.JwtTokenProvider;
+
+import com.everyware.common.jwt.Helper;
+import com.everyware.common.jwt.JwtTokenProvider;
 import com.everyware.model.member.dto.Response;
 import com.everyware.model.member.dto.UserLoginRequestDTO;
 import com.everyware.model.member.dto.UserSignUpRequestDto;

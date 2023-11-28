@@ -1,8 +1,7 @@
 package com.everyware.model.member.dto;
 
 
-import com.everyware.model.jwt.TokenInfo;
-import lombok.AllArgsConstructor;
+import com.everyware.common.jwt.TokenInfo;
 import lombok.Builder;
 import lombok.Getter;
 

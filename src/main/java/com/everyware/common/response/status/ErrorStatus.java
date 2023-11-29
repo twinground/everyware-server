@@ -26,7 +26,8 @@ public enum ErrorStatus implements BaseErrorCode {
     MEMBER_SIGNUP_ERROR(HttpStatus.BAD_REQUEST, "SIGNUP4001", "회원가입 유효성 검사 실패"),
     EMAIL_ALREADY_EXIST(HttpStatus.BAD_REQUEST, "SIGNUP4002", "이미 존재하는 이메일입니다."),
     BOOTH_NOT_EXIST(HttpStatus.NOT_FOUND, "BOOTH4001", "부스가 존재하지 않습니다."),
-    BOOTH_MEETING_ERROR(HttpStatus.BAD_REQUEST,"BOOTH4001","부스 미팅의 예상치 못한 오류가 발생했습니다. 다시 시도해주세요")
+    BOOTH_MEETING_ERROR(HttpStatus.BAD_REQUEST,"BOOTH4001","부스 미팅의 예상치 못한 오류가 발생했습니다. 다시 시도해주세요"),
+    BOOTH_MEETING_ALREADY_EXISTS_IN_BOOTH(HttpStatus.BAD_REQUEST,"BOOTH4002", "해당 부스에 이미 예약하셨습니다.")
     ;
 
     private final HttpStatus httpStatus;

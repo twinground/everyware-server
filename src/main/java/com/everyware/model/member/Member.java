@@ -1,5 +1,6 @@
 package com.everyware.model.member;
 
+import com.everyware.model.expo.booth.boothmeet.BoothMeet;
 import com.everyware.model.expo.booth.comment.entity.Comment;
 import com.everyware.common.entity.BaseEntity;
 import com.everyware.model.expo.booth.like.entity.Like;
@@ -95,6 +96,10 @@ public class Member extends BaseEntity implements UserDetails {
 
     @OneToMany(mappedBy = "member")
     private List<Comment> comments = new ArrayList<>();
+
+    @OneToMany(mappedBy = "member")
+    private List<BoothMeet> boothMeets = new ArrayList<>();
+
 
     public void passwordEncode(PasswordEncoder passwordEncoder) {
         this.password = passwordEncoder.encode(this.password);

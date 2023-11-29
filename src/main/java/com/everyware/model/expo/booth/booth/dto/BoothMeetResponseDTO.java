@@ -4,18 +4,23 @@ import com.everyware.model.expo.booth.boothmeet.BoothMeet;
 import lombok.Builder;
 import lombok.Getter;
 
-import java.time.format.DateTimeFormatter;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 
 @Builder
 @Getter
 public class BoothMeetResponseDTO {
-    String reservation_time;
+    LocalDateTime reservation_time;
+    private Long timestamp;
 
-    public static BoothMeetResponseDTO from(BoothMeet boothMeet){
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM월 dd일 HH시 mm분");
-        String formattedDateTime = boothMeet.getMeetReserveTime().format(formatter);
+    public static BoothMeetResponseDTO from(BoothMeet boothMeet) {
         return BoothMeetResponseDTO.builder()
-                .reservation_time(formattedDateTime)
+                .reservation_time(boothMeet.getMeetReserveTime())
+                .timestamp(calculateEpochTimestamp(boothMeet.getMeetReserveTime()))
                 .build();
+    }
+
+    private static Long calculateEpochTimestamp(LocalDateTime reservationTime) {
+        return reservationTime.toEpochSecond(ZoneOffset.UTC);
     }
 }

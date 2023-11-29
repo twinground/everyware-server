@@ -12,4 +12,6 @@ public interface BoothMeetRepository extends JpaRepository<BoothMeet,Long> {
 
     boolean existsByBoothAndMember(Booth booth, Member member);
 
+    boolean existsByMemberAndMeetReserveTimeBetween(Member member, LocalDateTime startTime, LocalDateTime endTime);
+
 }

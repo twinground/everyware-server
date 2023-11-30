@@ -10,13 +10,15 @@ import java.time.ZoneOffset;
 @Builder
 @Getter
 public class BoothMeetResponseDTO {
-    LocalDateTime reservation_time;
+    private LocalDateTime reservation_time;
     private Long timestamp;
+    private String booth_name;
 
     public static BoothMeetResponseDTO from(BoothMeet boothMeet) {
         return BoothMeetResponseDTO.builder()
                 .reservation_time(boothMeet.getMeetReserveTime())
                 .timestamp(calculateEpochTimestamp(boothMeet.getMeetReserveTime()))
+                .booth_name(boothMeet.getBooth().getTitle())
                 .build();
     }
 
